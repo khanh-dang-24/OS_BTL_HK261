@@ -274,7 +274,7 @@ int vmap_pgd_memset(struct pcb_t *caller,           // process call
 addr_t pgd,p4d,pud,pmd,pt;
 struct mm_struct *mm = caller->krnl->mm;
 for (pgit = 0; pgit < pgnum; pgit++){
-  addr_t pgn = (addr >> PAGING64_PAGESZ_LOBIT) + pgit;
+addr_t pgn = (addr >> PAGING64_ADDR_PT_SHIFT) + pgit;
   get_pd_from_pagenum(pgn, &pgd, &p4d, &pud, &pmd, &pt);
 
   }
@@ -305,7 +305,7 @@ fpit = frames;
 ret_rg->rg_start = addr;
 while (fpit != NULL && pgit < pgnum)
   {
-    pgn = (addr >> PAGING64_PAGESZ_LOBIT) + pgit;
+ pgn = (addr >> PAGING64_ADDR_PT_SHIFT) + pgit;
     if(pte_set_fpn(mm,pgn,fpit->fpn,caller) !=0)
     {
       break;
